@@ -1,0 +1,35 @@
+{
+  "name": "http-jsonrpc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "release": "tsc &&sudo npm publish",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liuliuabc/http-jsonrpc.git"
+  },
+  "keywords": [
+    "http-jsonrpc",
+    "jsonrpc",
+    "rpc",
+    "easy-jsonrpc",
+    "json"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/liuliuabc/http-jsonrpc/issues"
+  },
+  "homepage": "https://github.com/liuliuabc/http-jsonrpc#readme",
+  "devDependencies": {
+    "typescript": "^3.6.2"
+  },
+  "dependencies": {
+    "base-easy-jsonrpc": "^1.0.5"
+  }
+}
