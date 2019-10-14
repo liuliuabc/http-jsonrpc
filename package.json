@@ -1,5 +1,5 @@
 {
-  "name": "http-jsonrpc",
+  "name": "easy-http-jsonrpc",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",

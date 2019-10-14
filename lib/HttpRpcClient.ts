@@ -2,16 +2,13 @@ import HttpMethod from "./HttpMethod";
 import {RpcClient} from "base-easy-jsonrpc";
 import {RpcClientConfig, Server} from "base-easy-jsonrpc/dist/Model";
 import {deepAssign} from "./util";
-import {IHttpError} from "./HttpError";
 import {toHttpMethod} from "./Common";
 import {RequestBody} from "./Model";
 
 export default class HttpRpcClient extends RpcClient {
-    public rejectIntercept?: (e: IHttpError) => any;
-    public resolveIntercept?: (result: any) => any;
-    public beforeRequestIntercept?: (obj: { url: string; body: any }) => { url: string; body: any };
-
-    constructor(config: RpcClientConfig, server: Server, public baseBody: RequestBody = {}) {
+    constructor(config: RpcClientConfig, server: Server,
+                public baseBody: RequestBody = {},
+                public beforeRequestIntercept?: (body: RequestBody) => RequestBody) {
         super(config, server);
     }
 
@@ -97,8 +94,14 @@ export default class HttpRpcClient extends RpcClient {
     }
 
     async excute<T>(body: RequestBody) {
-        const assignBody = deepAssign(this.baseBody, body);
-        const {method, path, timeout, headers, body: rBody, query, pathId} = assignBody;
-        return this.call<T>(toHttpMethod(method, path), {headers, body: rBody, query, pathId}, timeout);
+        const assignBody = deepAssign({}, this.baseBody, body);
+        const {method, path, timeout, headers, body: rBody, query, pathId} = this.beforeRequestIntercept ? this.beforeRequestIntercept(assignBody) : assignBody;
+        return this.call<T>(toHttpMethod(method, path), {
+            headers,
+            body: rBody,
+            query,
+            pathId
+        }, timeout);
+
     }
 }
