@@ -4,14 +4,12 @@ import {RpcClientConfig, Server} from "base-easy-jsonrpc/dist/Model";
 import {deepAssign} from "./util";
 import {toHttpMethod} from "./Common";
 import {RequestBody} from "./Model";
-
 export default class HttpRpcClient extends RpcClient {
     constructor(config: RpcClientConfig, server: Server,
                 public baseBody: RequestBody = {},
                 public beforeRequestIntercept?: (body: RequestBody) => RequestBody) {
         super(config, server);
     }
-
     get<T>(body: RequestBody): Promise<T>;
     get<T>(path: string, body?: RequestBody): Promise<T>;
     get<T>(pathOrBody: string | RequestBody, body: RequestBody = (typeof pathOrBody === "string" ? {} : pathOrBody)): Promise<T> {
@@ -93,7 +91,7 @@ export default class HttpRpcClient extends RpcClient {
         return this.excute<T>(body);
     }
 
-    async excute<T>(body: RequestBody) {
+    async excute<T>(body: RequestBody){
         const assignBody = deepAssign({}, this.baseBody, body);
         const {method, path, timeout, headers, body: rBody, query, pathId} = this.beforeRequestIntercept ? this.beforeRequestIntercept(assignBody) : assignBody;
         return this.call<T>(toHttpMethod(method, path), {
