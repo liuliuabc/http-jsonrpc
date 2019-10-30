@@ -1,6 +1,6 @@
 {
   "name": "easy-http-jsonrpc",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "基于jsonrpc库封装的类restful http库",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

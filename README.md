@@ -4,12 +4,24 @@
 ##使用范例
 ```
         const server = new HttpRpcServer();
-        server.onDelete("user", ({pathId,query,body}, router) => {
+        server.onGet(/.*/, ({query,body,headers}) => {
+            if(headers["token"]!="123"){
+               throw HttpError.Unauthorized;
+            }else{
+               router.next();
+            }
+        });
+        server.onDelete("user/:age/:name", ({query,body,headers,paths}, router) => {
+               const {age,name}=paths;
+               return name;
+        });
+        server.onDelete("user", ({query,body,headers}, router) => {
             return true;
         });
-        server.onGet("user", ({pathId,query,body}) => {
+        server.onGet("user", ({query,body}) => {
             return true;
         });
+ 
        const client = new HttpRpcClient({timeout: 3000}, {
             send: (data) => {
                 this.server.onHttpClientMessage({
